@@ -13,14 +13,14 @@ window.fullPageScreenshot = async function() {
     const images = [];
     for (let i = 0; i < numScreens; i++) {
         window.scrollTo(0, i * viewportHeight);
-        await new Promise(res => setTimeout(res, 300)); // ждем отрисовки
+        await new Promise(res => setTimeout(res, 300)); // wait for rendering
         const dataUrl = await new Promise(resolve => {
             chrome.runtime.sendMessage({ action: 'captureVisible' }, res => resolve(res.dataUrl));
         });
         images.push(dataUrl);
     }
 
-    // Склеиваем изображения
+    // Stitch images together
     const canvas = document.createElement('canvas');
     canvas.width = window.innerWidth * dpr;
     canvas.height = totalHeight * dpr;
@@ -37,7 +37,7 @@ window.fullPageScreenshot = async function() {
         );
     }
 
-    // Восстанавливаем скролл
+    // Restore scroll
     window.scrollTo(0, originalScrollY);
     document.body.style.overflow = originalOverflow;
 

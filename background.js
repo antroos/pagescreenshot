@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true; // async
     }
     if (message.action === 'captureVisible') {
-        // Получаем tabId из sender
+        // Get tabId from sender
         const tabId = sender.tab.id;
         chrome.tabs.captureVisibleTab(sender.tab.windowId, { format: 'png', quality: 100 }, (dataUrl) => {
             sendResponse({ dataUrl });
@@ -17,27 +17,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function handleFullPageScreenshot(url, sendResponse) {
     try {
-        // 1. Открываем новую вкладку
+        // 1. Open a new tab
         const tab = await chrome.tabs.create({ url, active: true });
         const tabId = tab.id;
 
-        // 2. Ждем полной загрузки страницы
+        // 2. Wait for the page to fully load
         await waitForTabLoad(tabId);
 
-        // 3. Ждем еще 3 секунды
+        // 3. Wait another 3 seconds
         await new Promise(res => setTimeout(res, 3000));
 
-        // 4. Инжектим content script и собираем скриншоты
+        // 4. Inject content script and collect screenshots
         const result = await chrome.scripting.executeScript({
             target: { tabId },
             func: () => window.fullPageScreenshot()
         });
         const dataUrl = result[0].result;
 
-        // 5. Сохраняем скриншот
+        // 5. Save the screenshot
         await downloadScreenshot(dataUrl);
 
-        // 6. (Опционально) Закрываем вкладку
+        // 6. (Optional) Close the tab
         // await chrome.tabs.remove(tabId);
 
         sendResponse({ success: true });

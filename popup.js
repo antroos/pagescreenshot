@@ -14,22 +14,22 @@ document.addEventListener('DOMContentLoaded', function() {
     screenshotBtn.addEventListener('click', function() {
         const url = urlInput.value.trim();
         if (!url) {
-            showStatus('Пожалуйста, введите URL', 'error');
+            showStatus('Please enter a URL', 'error');
             return;
         }
         if (!isValidUrl(url)) {
-            showStatus('Пожалуйста, введите корректный URL', 'error');
+            showStatus('Please enter a valid URL', 'error');
             return;
         }
-        showStatus('Запрос отправлен, ожидайте...', 'info');
+        showStatus('Request sent, please wait...', 'info');
         chrome.runtime.sendMessage({
             action: 'fullPageScreenshot',
             url: url
         }, function(response) {
             if (response && response.success) {
-                showStatus('Скриншот сохранён!', 'success');
+                showStatus('Screenshot saved!', 'success');
             } else {
-                showStatus('Ошибка: ' + (response?.error || 'Неизвестная ошибка'), 'error');
+                showStatus('Error: ' + (response?.error || 'Unknown error'), 'error');
             }
         });
     });

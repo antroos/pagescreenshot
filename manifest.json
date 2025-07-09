@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Screenshot Tool",
   "version": "1.0",
-  "description": "Открывает URL, ждет загрузки и делает полный скриншот страницы",
+  "description": "Opens a URL, waits for the page to load, and takes a full-page screenshot.",
   "permissions": [
     "activeTab",
     "tabs",
