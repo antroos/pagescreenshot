@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Screenshot Tool",
+  "version": "1.0",
+  "description": "Открывает URL, ждет загрузки и делает полный скриншот страницы",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Screenshot Tool"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ]
+} 
